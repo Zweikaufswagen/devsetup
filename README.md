@@ -21,6 +21,14 @@ Small, scalable dotfiles setup for DevPod/devcontainers and local shells.
 └── install.ps1
 ```
 
+## DevPod setup once (Powershell)
+
+```powershell
+devpod context set-options `
+    -o DOTFILES_URL=https://github.com/Zweikaufswagen/dotfiles `
+    -o DOTFILES_SCRIPT=install.sh
+```
+
 ## DevPod / Linux devcontainer
 
 Run once after the dotfiles repository is cloned:
