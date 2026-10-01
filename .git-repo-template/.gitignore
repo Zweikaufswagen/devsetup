@@ -1,0 +1,104 @@
+# Secrets / environment
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.sample
+secrets/
+secret/
+*.secret
+*.secrets
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Logs
+*.log
+logs/
+
+# Temporary / cache
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+.cache/
+tmp/
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.iml
+.vs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / JavaScript / TypeScript
+node_modules/
+.npm/
+.pnpm-store/
+.next/
+.nuxt/
+.svelte-kit/
+.angular/
+coverage/
+*.tsbuildinfo
+
+# Java / Gradle / Maven
+.gradle/
+target/
+out/
+*.class
+
+# .NET
+bin/
+obj/
+
+# C / C++
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.exe
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# Rust
+# Keep Cargo.lock for applications; decide per project for libraries.
+target/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+
+# Local databases / generated output
+*.sqlite
+*.sqlite3
+*.db
+local-data/
+generated/
+output/
+outputs/
