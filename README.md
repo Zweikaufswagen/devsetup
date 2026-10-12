@@ -6,6 +6,7 @@ Small, scalable dotfiles setup for DevPod/devcontainers and local shells.
 
 ```text
 .dotfiles/
+├── .devconatiner/
 ├── .git-repo-template/
 │   ├── .gitignore
 │   ├── README.md
