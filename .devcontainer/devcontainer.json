@@ -1,0 +1,19 @@
+{
+  "name": "Lucas · DevPod Basis",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "containerUser": "devpod",
+  "remoteUser": "devpod",
+  "updateRemoteUserUID": true,
+  "init": true,
+  "overrideCommand": true,
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}
