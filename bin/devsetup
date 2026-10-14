@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+setup_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+exec env MSYS_NO_PATHCONV=1 powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass \
+    -File "$(cygpath -w "$setup_root/powershell/devsetup.ps1")" "$@"

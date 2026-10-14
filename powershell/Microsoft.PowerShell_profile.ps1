@@ -1,15 +1,7 @@
-# Dotfiles PowerShell profile
+# Loaded by Windows PowerShell 5.1 and PowerShell 7 (all hosts).
+. (Join-Path $PSScriptRoot 'functions/host.ps1')
+. (Join-Path $PSScriptRoot 'functions/open-devpod.ps1')
 
-$dotfilesHome = if ($env:DOTFILES_HOME) {
-    $env:DOTFILES_HOME
-} else {
-    Join-Path $HOME ".dotfiles"
-}
-
-$functionsDir = Join-Path $dotfilesHome "powershell/functions"
-
-if (Test-Path $functionsDir) {
-    Get-ChildItem -Path $functionsDir -Filter "*.ps1" -File | ForEach-Object {
-        . $_.FullName
-    }
+function global:devsetup {
+    & (Join-Path $env:DEVSETUP_HOME 'bin/devsetup.cmd') @args
 }

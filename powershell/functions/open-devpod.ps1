@@ -1,58 +1,3 @@
-# Setup (Windows):
-1. Devpod Installieren:
-```powershell
-# Installationsordner im eigenen Benutzerprofil erstellen
-$devpodBin = Join-Path $env:LOCALAPPDATA "Programs\DevPod"
-New-Item -ItemType Directory -Force -Path $devpodBin | Out-Null
-
-# Windows-Version herunterladen
-Invoke-WebRequest `
-    -Uri "https://github.com/loft-sh/devpod/releases/latest/download/devpod-windows-amd64.exe" `
-    -OutFile (Join-Path $devpodBin "devpod.exe")
-
-# Dauerhaft zum Benutzer-PATH hinzufügen
-$userPath = [string][Environment]::GetEnvironmentVariable("Path", "User")
-
-if (($userPath -split ";") -notcontains $devpodBin) {
-    $updatedPath = (@($userPath, $devpodBin) |
-        Where-Object { $_ }) -join ";"
-
-    [Environment]::SetEnvironmentVariable("Path", $updatedPath, "User")
-}
-
-# Auch im aktuellen PowerShell-Fenster verfügbar machen
-$env:Path += ";$devpodBin"
-```
-
-2. Prüfen:
-```powershell
-devpod version
-docker version
-
-devpod provider add docker
-devpod provider use docker
-```
-
-3. Dotfiles verbinden:
-```powershell
-devpod context set-options -o DOTFILES_URL=https://github.com/Zweikaufswagen/dotfiles.git -o DOTFILES_SCRIPT=install.sh
-```
-
-4. IDE
-```powershell
-devpod ide use codium
-```
-
-3. Einmalig: fix in ps Profil hinzufügen
-```powershell
-if (-not (Test-Path -LiteralPath $PROFILE)) {
-    New-Item -ItemType File -Path $PROFILE -Force | Out-Null
-}
-
-notepad $PROFILE
-```
-
-```powershell
 function Open-DevPod {
     [CmdletBinding()]
     param(
@@ -62,22 +7,28 @@ function Open-DevPod {
 
         [string]$Source = ".",
 
-        [string]$RemoteFolder = "/workspaces"
+        [string]$RemoteFolder = "/workspaces/project"
     )
 
     $ErrorActionPreference = "Stop"
 
+    Update-DevSetupProcessPath
     # Benoetigte lokale Programme vorab pruefen
     Get-Command devpod.exe, codium -ErrorAction Stop | Out-Null
 
     # Erst starten, noch keine IDE-Verbindung aufbauen
-    devpod.exe up $Source --id $Id --ide none
+    Start-DevSetupDocker
+    Initialize-DevSetupProvider
+    devpod.exe up $Source --id $Id --provider docker --ide none
 
     if ($LASTEXITCODE -ne 0) {
         throw "devpod up ist fehlgeschlagen. Siehe Ausgabe oben."
     }
 
     $configPath = Join-Path $env:USERPROFILE ".ssh\config"
+    if (-not (Test-Path -LiteralPath $configPath)) {
+        throw "DevPod hat keine SSH-Konfiguration angelegt: $configPath"
+    }
     $lines = [System.IO.File]::ReadAllLines($configPath)
 
     $insideDevPod = $false
@@ -119,13 +70,8 @@ function Open-DevPod {
     codium --new-window `
         --remote "ssh-remote+${Id}.devpod" `
         $RemoteFolder
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "VSCodium konnte nicht geoeffnet werden. Erneut versuchen: devsetup open"
+    }
 }
-```
-
-4. Projekt erstellen:
-```powershell
-devpod up . --id NAME --ide none
-ssh NAME.devpod
-```
-
-# Täglicher Betrieb:

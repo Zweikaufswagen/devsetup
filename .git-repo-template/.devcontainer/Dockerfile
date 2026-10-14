@@ -21,11 +21,11 @@ RUN apt-get update \
         curl \
         git \
         libstdc++6 \
+        mc \
         openssh-client \
         sudo \
         tmux \
         unzip \
-        mc \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=uv /uv /uvx /usr/local/bin/

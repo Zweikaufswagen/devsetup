@@ -15,5 +15,8 @@
         "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
-  }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/project,type=bind",
+  "workspaceFolder": "/workspaces/project",
+  "postCreateCommand": "uv tool install pre-commit && git config --global --add safe.directory /workspaces/project && pre-commit install"
 }
