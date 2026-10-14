@@ -9,10 +9,10 @@ lokal gemounteten Devcontainer über DevPod in **VSCodium**.
 Voraussetzungen: Windows 10/11 (64 Bit), **Git Bash** und **winget**
 ([App Installer](https://aka.ms/getwinget)). In Git Bash:
 
-```bash
+```git bash
 git clone https://github.com/Zweikaufswagen/devsetup.git
 cd devsetup
-bash install.sh
+./install.sh
 ```
 
 Bei einem vorhandenen Klon genügt `bash install.sh` im Repository.
