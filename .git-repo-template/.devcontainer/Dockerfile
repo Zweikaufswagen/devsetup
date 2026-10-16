@@ -26,6 +26,7 @@ RUN apt-get update \
         sudo \
         tmux \
         unzip \
+        dnsutils \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=uv /uv /uvx /usr/local/bin/
