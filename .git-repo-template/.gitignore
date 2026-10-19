@@ -1,3 +1,9 @@
+# Private certificates and keys
+.devcontainer/certs/
+*.key
+*.p12
+*.pfx
+
 # Secrets / environment
 .env
 .env.*

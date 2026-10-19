@@ -17,6 +17,9 @@
     }
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/project,type=bind",
+  "mounts": [
+    "source=${localEnv:CORP_CA_DIR},target=/usr/local/share/ca-certificates/company,type=bind,readonly"
+  ],
   "workspaceFolder": "/workspaces/project",
-  "postCreateCommand": "uv tool install pre-commit && git config --global --add safe.directory /workspaces/project && pre-commit install"
+  "postCreateCommand": "uv tool install pre-commit && git config --global --add safe.directory /workspaces/project && pre-commit install && sudo update-ca-certificates"
 }
