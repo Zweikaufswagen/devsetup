@@ -101,6 +101,61 @@ devsetup help
 In PowerShell ist außerdem `Open-DevPod -Id NAME -Source .` verfügbar. Für eine
 abweichende Containerstruktur lässt sich `-RemoteFolder /anderer/pfad` angeben.
 
+## Alte Devcontainer sauber entfernen
+
+Die folgenden Befehle im **Windows-Terminal** (PowerShell, CMD oder Git Bash)
+ausführen; Docker Desktop muss laufen. Das zugehörige VSCodium-Fenster vorher
+schließen.
+
+1. Mit `devpod list` die vorhandenen Workspaces anzeigen und die ID des alten
+   Projekts auswählen. Nach dem Verschieben eines Projektordners kann noch ein
+   Workspace mit der alten, pfadabhängigen ID vorhanden sein.
+2. Den ausgewählten Workspace über DevPod löschen, damit sowohl die zugehörige
+   Containerumgebung als auch der DevPod-Workspace-Eintrag entfernt werden:
+
+   ```text
+   devpod delete DEINE-WORKSPACE-ID
+   ```
+
+   `DEINE-WORKSPACE-ID` durch die ID aus der Liste ersetzen und die Rückfrage
+   prüfen. Anschließend mit `devpod list` kontrollieren, dass der Eintrag weg ist.
+
+**Der lokale Windows-Projektordner bleibt bei dieser Vorlage erhalten**, da er
+nur als Bind Mount eingebunden ist. Dateien und manuell installierte Werkzeuge,
+die ausschließlich im Container liegen, gehen beim Löschen verloren; benötigte
+Daten vorher in den Projektordner kopieren. Zusätzliche Volumes, etwa für
+Datenbanken, vor dem Löschen separat sichern.
+
+Willst du nur pausieren, genügt `devpod stop DEINE-WORKSPACE-ID`.
+Mit `devsetup open` im Projektordner kannst du einen gestoppten Workspace wieder
+starten oder nach dem Löschen neu erstellen.
+
+### Optional: Docker-Speicher freigeben
+
+Images und Build-Cache können nach dem Löschen erhalten bleiben. Zunächst den
+Speicherverbrauch prüfen:
+
+```text
+docker system df
+```
+
+Bei Bedarf ungetaggte, unbenutzte Images und unbenutzten Build-Cache entfernen;
+die Rückfragen jeweils prüfen:
+
+```text
+docker image prune
+docker builder prune
+```
+
+Diese Bereinigung betrifft Docker insgesamt, also auch andere Projekte. Spätere
+Builds können dadurch länger dauern. Für einzelne übrig gebliebene Container,
+Images oder Volumes in Docker Desktop gezielt die Ressource auswählen, ihre
+Zuordnung prüfen und sie erst dann löschen. Container regulärer DevPod-Workspaces
+immer zuerst mit `devpod delete` entfernen.
+
+Kein pauschales `docker system prune --volumes` verwenden: Es kann auch Ressourcen
+anderer Projekte und unbenutzte Daten-Volumes entfernen.
+
 ## Repository-Struktur
 
 ```text
